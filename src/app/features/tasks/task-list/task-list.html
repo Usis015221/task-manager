@@ -15,40 +15,61 @@
           <th class="px-4 py-3 text-sm font-semibold text-gray-600">Prioridad</th>
           <th class="px-4 py-3 text-sm font-semibold text-gray-600">Estado</th>
           <th class="px-4 py-3 text-sm font-semibold text-gray-600">Fecha Límite</th>
+          <th class="px-4 py-3 text-sm font-semibold text-gray-600 text-center">Acciones</th>
         </tr>
       </thead>
       
       <tbody class="divide-y divide-gray-100" *ngIf="tasks$ | async as tasks; else loading">
-    
-    <tr *ngFor="let task of tasks" 
-        class="transition"
-        [ngClass]="isOverdue(task) ? 'bg-red-50 border-l-4 border-red-500 hover:bg-red-100' : 'hover:bg-gray-50'">
-      
-      <td class="px-4 py-3 text-gray-800 font-medium">{{ task.title }}</td>
-      <td class="px-4 py-3 text-gray-600">{{ task.assignee }}</td>
-      <td class="px-4 py-3">
-        <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 font-medium">
-          {{ task.priority }}
-        </span>
-      </td>
-      <td class="px-4 py-3">
-        <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 font-medium">
-          {{ task.status }}
-        </span>
-      </td>
-      
-      <td class="px-4 py-3 text-sm">
-        <div class="flex items-center gap-2">
-          <span [ngClass]="isOverdue(task) ? 'text-red-700 font-bold' : 'text-gray-500'">
-            {{ task.dueDate }}
-          </span>
-          <span *ngIf="isOverdue(task)" class="px-2 py-0.5 text-[10px] uppercase font-bold bg-red-200 text-red-800 rounded-full animate-pulse">
-            Vencida
-          </span>
-        </div>
-      </td>
-    </tr>
-  </tbody>
+        
+        <tr *ngFor="let task of tasks" 
+            class="transition"
+            [ngClass]="isOverdue(task) ? 'bg-red-50 border-l-4 border-red-500 hover:bg-red-100' : 'hover:bg-gray-50'">
+          
+          <td class="px-4 py-3 text-gray-800 font-medium">{{ task.title }}</td>
+          <td class="px-4 py-3 text-gray-600">{{ task.assignee }}</td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 font-medium">
+              {{ task.priority }}
+            </span>
+          </td>
+
+          <td class="px-4 py-3">
+            <select [value]="task.status" (change)="changeStatus(task, $event)"
+                    class="text-xs rounded-full font-medium px-2 py-1 outline-none cursor-pointer border border-gray-300 transition"
+                    [ngClass]="{
+                      'bg-blue-100 text-blue-800': task.status === 'Pendiente',
+                      'bg-yellow-100 text-yellow-800': task.status === 'En Progreso', 
+                      'bg-green-100 text-green-800': task.status === 'Completada'
+                    }">
+              <option value="Pendiente" class="bg-white text-gray-800">Pendiente</option>
+              <option value="En Progreso" class="bg-white text-gray-800">En Progreso</option>
+              <option value="Completada" class="bg-white text-gray-800">Completada</option>
+            </select>
+          </td>
+          
+          <td class="px-4 py-3 text-sm">
+            <div class="flex items-center gap-2">
+              <span [ngClass]="isOverdue(task) ? 'text-red-700 font-bold' : 'text-gray-500'">
+                {{ task.dueDate }}
+              </span>
+              <span *ngIf="isOverdue(task)" class="px-2 py-0.5 text-[10px] uppercase font-bold bg-red-200 text-red-800 rounded-full animate-pulse">
+                Vencida
+              </span>
+            </div>
+          </td>
+
+          <td class="px-4 py-3 text-center space-x-2">
+            <button [routerLink]="['/editar-tarea', task.id]" class="text-xs text-blue-600 hover:text-blue-800 font-bold px-3 py-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded transition">
+              Editar
+            </button>
+            
+            <button (click)="deleteTask(task)" class="text-xs text-red-500 hover:text-red-700 font-bold px-3 py-1 bg-red-50 hover:bg-red-100 border border-red-200 rounded transition">
+              Eliminar
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
     </table>
   </div>
 
