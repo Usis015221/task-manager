@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../models/task';
+import { environment } from '../../../environments/environment';
 
 // El decorador Injectable permite que este servicio sea utilizado en cualquier parte de la aplicacion
 // sin necesidad de declararlo multiples veces en los modulos.
@@ -13,7 +14,7 @@ export class TaskService {
     private http = inject(HttpClient);
 
     // Definimos la direccion principal de nuestra API o servidor local
-    private apiUrl = 'https://6a6bb51c9939b347ccce3d59.mockapi.io/tasks';
+    private apiUrl = environment.apiUrl;
 
     // Peticion GET para recuperar todo el arreglo de tareas desde la base de datos
     getTasks() : Observable<Task[]> {

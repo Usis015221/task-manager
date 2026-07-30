@@ -5,7 +5,7 @@ Aplicación web desarrollada y utilizada como prueba técnica para evaluar y val
 ## Enlaces del Proyecto
 
 - **Repositorio en GitHub:** [https://github.com/Usis015221/task-manager.git]
-- **Despliegue en Vercel:** [Enlace a la demo en Vercel]
+- **Despliegue en Vercel:** [https://task-manager-six-henna.vercel.app/]
 
 ## Stack Tecnologico
 
@@ -15,6 +15,13 @@ Aplicación web desarrollada y utilizada como prueba técnica para evaluar y val
 - **Formularios:** Reactive Forms con validaciones personalizadas
 - **Estilos:** Tailwind CSS
 - **Backend Simulado:** JSON Server (`json-server`)
+
+- **## Arquitectura de Entornos (Dual Environment)
+
+El proyecto está configurado mediante Angular Environments (`environment.ts` y `environment.prod.ts`) para separar de forma limpia la fuente de datos según el entorno de ejecución:
+
+- **Desarrollo Local (`environment.ts`):** Configurado para conectarse de manera local a un servidor simulado mediante `json-server` (`http://localhost:3000/tasks`).
+- **Producción / Nube (`environment.prod.ts`):** Configurado automáticamente durante la compilación (`ng build`) para consumir una API REST real alojada en **MockAPI** (`https://6a6bb51c9939b347ccce3d59.mockapi.io/tasks`), garantizando una persistencia completa y un entorno interactivo en el despliegue de Vercel.
 
 ## Instrucciones para Levantar el Proyecto Localmente
 
