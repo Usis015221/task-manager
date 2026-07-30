@@ -13,7 +13,7 @@ export class TaskService {
     private http = inject(HttpClient);
 
     // Definimos la direccion principal de nuestra API o servidor local
-    private apiUrl = 'https://my-json-server.typicode.com/Usis015221/task-manager/tasks';
+    private apiUrl = 'https://6a6bb51c9939b347ccce3d59.mockapi.io/tasks';
 
     // Peticion GET para recuperar todo el arreglo de tareas desde la base de datos
     getTasks() : Observable<Task[]> {
