@@ -2,27 +2,27 @@
     "tasks": [
         {
             "id": "1",
-            "tittle": "Revisar arquitectura de quotify",
+            "title": "Revisar arquitectura de quotify",
             "assignee": "Geovanni Guerrrero",
-            "prority": "Alta",
+            "priority": "Alta",
             "status": "Completada",
             "dueDate": "2026-07-27"
         },
         {
             "id": "2",
-            "tittle": "Presentacion demo de quotify",
+            "title": "Presentacion demo de quotify",
             "assignee": "Geovanni Guerrrero",
-            "prority": "Media",
+            "priority": "Media",
             "status": "Pendiente",
             "dueDate": "2026-08-11"
         },
         {
             "id": "3",
-            "tittle": "Solucionar tiempos de espera en render",
+            "title": "Solucionar tiempos de espera en render",
             "assignee": "Geovanni Guerrrero",
-            "prority": "Alta",
+            "priority": "Alta",
             "status": "En progreso",
-            "dueDate": "2026-07-2"
+            "dueDate": "2026-07-02"
         }
     ]
 }

@@ -1,6 +1,6 @@
 export interface Task {
     id: string;
-    tittle: string;
+    title: string;
     assignee: string;
     priority: 'Baja' |'Media' | 'Alta';
     status: 'Pendiente' | 'En Progreso' | 'Completada';
