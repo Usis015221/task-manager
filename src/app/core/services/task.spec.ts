@@ -1,54 +1,57 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TaskService } from './task'; // Ojo: Asegurate que este import coincida con el nombre de tu archivo
+import { TaskService } from './task';
 import { Task } from '../models/task';
 
+// Agrupador principal de las pruebas unitarias para el servicio TaskService
 describe('TaskService', () => {
   let service: TaskService;
   let httpMock: HttpTestingController;
 
+  // Este bloque de configuracion se ejecuta antes de iniciar cada prueba individual
   beforeEach(() => {
-    // 1. Configuramos el entorno de pruebas simulando el HttpClient
+    // Preparamos el entorno de pruebas reemplazando el modulo HTTP real por uno de simulacion
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TaskService]
     });
     
-    // 2. Inyectamos el servicio y el controlador de pruebas HTTP
+    // Inyectamos las instancias del servicio y del controlador de peticiones falsas
     service = TestBed.inject(TaskService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
+  // Este bloque se ejecuta inmediatamente despues de finalizar cada prueba
   afterEach(() => {
-    // Verificamos que no queden peticiones pendientes al terminar la prueba
+    // Nos aseguramos de que no queden peticiones HTTP pendientes de resolver
     httpMock.verify();
   });
 
-  // Prueba 1: Que el servicio exista
+  // Validacion basica para confirmar que el servicio se instancie correctamente en memoria
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // Prueba 2: Que el GET de tareas funcione correctamente
+  // Validacion del flujo completo de obtencion de datos
   it('debe obtener la lista de tareas mediante un GET', () => {
-    // Creamos una tarea falsa para la prueba
+    // Definimos un arreglo de tareas ficticio para simular la respuesta del servidor
     const mockTasks: Task[] = [
       { id: '1', title: 'Tarea de Prueba', assignee: 'Erick', priority: 'Alta', status: 'Pendiente', dueDate: '2026-08-01' }
     ];
 
-    // Nos suscribimos al método getTasks
+    // Ejecutamos el metodo del servicio y verificamos que los datos recibidos coincidan con nuestra simulacion
     service.getTasks().subscribe(tasks => {
       expect(tasks.length).toBe(1);
       expect(tasks).toEqual(mockTasks);
     });
 
-    // Simulamos y atrapamos la petición HTTP hacia nuestro backend
+    // Interceptamos la peticion HTTP que el servicio intenta enviar a la URL configurada
     const req = httpMock.expectOne(service['apiUrl']); 
     
-    // Verificamos que sea un método GET
+    // Comprobamos que el metodo de la peticion interceptada sea estrictamente GET
     expect(req.request.method).toBe('GET');
     
-    // Devolvemos la tarea falsa como respuesta exitosa
+    // Completamos la peticion devolviendo nuestro arreglo ficticio como respuesta exitosa
     req.flush(mockTasks);
   });
 });

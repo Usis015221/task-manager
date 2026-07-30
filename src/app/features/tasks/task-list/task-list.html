@@ -1,4 +1,5 @@
 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mt-4">
+  
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-xl font-bold text-gray-800">Listado de Tareas</h2>
     <button routerLink="/nueva-tarea" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition font-medium">
@@ -16,6 +17,7 @@
   </div>
 
   <div class="flex flex-col md:flex-row gap-4 mb-6 bg-gray-50 p-4 rounded-md border border-gray-100">
+    
     <div class="flex-1">
       <input type="text" placeholder="Buscar solo por título..."
              (input)="onSearch($event)"
@@ -45,6 +47,7 @@
 
   <div class="overflow-x-auto">
     <table class="min-w-full table-auto text-left">
+      
       <thead class="bg-gray-50 border-b border-gray-200">
         <tr>
           <th class="px-4 py-3 text-sm font-semibold text-gray-600">Título</th>
@@ -57,6 +60,7 @@
       </thead>
       
       <tbody class="divide-y divide-gray-100" *ngIf="filteredTasks$ | async as tasks; else loading">
+        
         <tr *ngFor="let task of tasks" 
             class="transition"
             [ngClass]="isOverdue(task) ? 'bg-red-50 border-l-4 border-red-500 hover:bg-red-100' : 'hover:bg-gray-50'">

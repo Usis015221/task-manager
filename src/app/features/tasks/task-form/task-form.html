@@ -1,4 +1,5 @@
 <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-sm border border-gray-200 mt-6">
+  
   <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ isEditing ? 'Editar Tarea' : 'Crear Nueva Tarea' }}</h2>
 
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="space-y-6">
@@ -20,12 +21,14 @@
       <input type="text" formControlName="assignee" placeholder="Nombre del integrante"
              class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
              [ngClass]="{'border-red-500': taskForm.get('assignee')?.invalid && taskForm.get('assignee')?.touched}">
+      
       <div *ngIf="taskForm.get('assignee')?.invalid && taskForm.get('assignee')?.touched" class="text-red-500 text-xs mt-1 font-medium">
         El responsable es obligatorio.
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
+      
       <div>
         <label class="block text-sm font-semibold text-gray-700 mb-1">Prioridad</label>
         <select formControlName="priority" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
@@ -40,6 +43,7 @@
         <input type="date" formControlName="dueDate"
                class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                [ngClass]="{'border-red-500': taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched}">
+        
         <div *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched" class="text-red-500 text-xs mt-1 font-medium">
           <span *ngIf="taskForm.get('dueDate')?.hasError('required')">La fecha es obligatoria.</span>
           <span *ngIf="taskForm.get('dueDate')?.hasError('pastDate')">La fecha no puede ser en el pasado.</span>
@@ -51,6 +55,7 @@
       <button type="button" routerLink="/" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-md font-medium transition">
         Cancelar
       </button>
+      
       <button type="submit" [disabled]="taskForm.invalid"
               class="px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition">
         Guardar Tarea
