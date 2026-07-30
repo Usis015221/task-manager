@@ -28,12 +28,10 @@ export class TaskFormComponent implements OnInit {
   });
 
   ngOnInit() {
-    // 1. Revisamos si la URL trae un parámetro llamado 'id'
     this.taskId = this.route.snapshot.paramMap.get('id');
     
     if (this.taskId) {
       this.isEditing = true;
-      // 2. Si estamos editando, traemos los datos de esa tarea específica y llenamos el formulario
       this.taskService.getTasks().subscribe(tasks => {
         const taskToEdit = tasks.find(t => t.id === this.taskId);
         if (taskToEdit) {
@@ -63,8 +61,6 @@ export class TaskFormComponent implements OnInit {
     }
 
     if (this.isEditing && this.taskId) {
-      // 3. Flujo de Actualización (PUT)
-      // Buscamos mantener el estado original que ya tenía la tarea
       this.taskService.getTasks().subscribe(tasks => {
         const existingTask = tasks.find(t => t.id === this.taskId);
         
@@ -83,7 +79,6 @@ export class TaskFormComponent implements OnInit {
       });
 
     } else {
-      // 4. Flujo de Creación (POST - el que ya teníamos)
       const newTask: Task = {
         id: Date.now().toString(),
         title: this.taskForm.value.title!,

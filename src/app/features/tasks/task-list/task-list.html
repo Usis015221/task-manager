@@ -6,6 +6,43 @@
     </button>
   </div>
 
+  <div *ngIf="errorMessage$ | async as error" class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md shadow-sm animate-pulse">
+    <div class="flex items-center">
+      <svg class="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span class="text-red-700 font-medium">{{ error }}</span>
+    </div>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-4 mb-6 bg-gray-50 p-4 rounded-md border border-gray-100">
+    <div class="flex-1">
+      <input type="text" placeholder="Buscar solo por título..."
+             (input)="onSearch($event)"
+             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm shadow-sm transition">
+    </div>
+    
+    <div class="w-full md:w-56">
+      <select (change)="onAssigneeChange($event)"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white shadow-sm transition cursor-pointer">
+        <option value="Todos">Cualquier Responsable</option>
+        <option *ngFor="let assignee of assignees$ | async" [value]="assignee">
+          {{ assignee }}
+        </option>
+      </select>
+    </div>
+
+    <div class="w-full md:w-48">
+      <select (change)="onFilterChange($event)"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm bg-white shadow-sm transition cursor-pointer">
+        <option value="Todos">Todos los estados</option>
+        <option value="Pendiente">Pendiente</option>
+        <option value="En Progreso">En Progreso</option>
+        <option value="Completada">Completada</option>
+      </select>
+    </div>
+  </div>
+
   <div class="overflow-x-auto">
     <table class="min-w-full table-auto text-left">
       <thead class="bg-gray-50 border-b border-gray-200">
@@ -19,16 +56,21 @@
         </tr>
       </thead>
       
-      <tbody class="divide-y divide-gray-100" *ngIf="tasks$ | async as tasks; else loading">
-        
+      <tbody class="divide-y divide-gray-100" *ngIf="filteredTasks$ | async as tasks; else loading">
         <tr *ngFor="let task of tasks" 
             class="transition"
             [ngClass]="isOverdue(task) ? 'bg-red-50 border-l-4 border-red-500 hover:bg-red-100' : 'hover:bg-gray-50'">
           
           <td class="px-4 py-3 text-gray-800 font-medium">{{ task.title }}</td>
           <td class="px-4 py-3 text-gray-600">{{ task.assignee }}</td>
+          
           <td class="px-4 py-3">
-            <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 font-medium">
+            <span class="px-2 py-1 text-xs rounded-full font-medium"
+                  [ngClass]="{
+                    'bg-blue-100 text-blue-800': task.priority === 'Baja',
+                    'bg-yellow-100 text-yellow-800': task.priority === 'Media',
+                    'bg-red-100 text-red-800': task.priority === 'Alta'
+                  }">
               {{ task.priority }}
             </span>
           </td>
@@ -38,7 +80,7 @@
                     class="text-xs rounded-full font-medium px-2 py-1 outline-none cursor-pointer border border-gray-300 transition"
                     [ngClass]="{
                       'bg-blue-100 text-blue-800': task.status === 'Pendiente',
-                      'bg-yellow-100 text-yellow-800': task.status === 'En Progreso', 
+                      'bg-yellow-100 text-yellow-800': task.status === 'En Progreso',
                       'bg-green-100 text-green-800': task.status === 'Completada'
                     }">
               <option value="Pendiente" class="bg-white text-gray-800">Pendiente</option>
@@ -62,7 +104,6 @@
             <button [routerLink]="['/editar-tarea', task.id]" class="text-xs text-blue-600 hover:text-blue-800 font-bold px-3 py-1 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded transition">
               Editar
             </button>
-            
             <button (click)="deleteTask(task)" class="text-xs text-red-500 hover:text-red-700 font-bold px-3 py-1 bg-red-50 hover:bg-red-100 border border-red-200 rounded transition">
               Eliminar
             </button>
@@ -74,7 +115,7 @@
   </div>
 
   <ng-template #loading>
-    <div class="flex justify-center items-center py-12">
+    <div *ngIf="!(errorMessage$ | async)" class="flex justify-center items-center py-12">
       <span class="text-gray-500 font-medium animate-pulse">Cargando tareas de la base de datos...</span>
     </div>
   </ng-template>
